@@ -18,7 +18,7 @@ public class Subsystem_Test extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotorEx motor0;
-    public static double power = 0.2;
+    public static double power =0.0;
 
     //this section allows us to access telemetry data from a browser
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -32,7 +32,7 @@ public class Subsystem_Test extends OpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        this.motor0 = hardwareMap.get(DcMotorEx.class,"leftBackDrive");
+        this.motor0 = hardwareMap.get(DcMotorEx.class,"elbowMotor");
 
         // Tell the driver that initialization is complete.
         dashboardTelemetry.addData("Status", "Initialized");

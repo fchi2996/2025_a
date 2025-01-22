@@ -72,13 +72,13 @@ public class DriveClass extends LinearOpMode
         //---HardwareMap---
 
         telemetry.addData("Status", "Initialized");
-        frontRight  = hardwareMap.get(DcMotor.class, "frontRight");
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "rightFront");
+        frontLeft = hardwareMap.get(DcMotor.class, "leftFront");
+        backRight = hardwareMap.get(DcMotor.class, "rightBack");
+        backLeft = hardwareMap.get(DcMotor.class, "leftBack");
 
         //---Arm Hardware Map---
-
+        /*
         armLeft = hardwareMap.get(DcMotorEx.class, "armLeft");
         armRight = hardwareMap.get(DcMotorEx.class, "armRight");
         wristMotor = hardwareMap.get(DcMotorEx.class, "wristMotor");
@@ -114,10 +114,10 @@ public class DriveClass extends LinearOpMode
         runtime.reset();
 
         //telemetry.update();
-
+        */
         while (opModeIsActive())
         {
-
+            /*
             telemetry.addData("Left MotorBehaviour: ", armLeft.getZeroPowerBehavior());
             telemetry.addData("Right MotorBehaviour: ", armRight.getZeroPowerBehavior());
             telemetry.addData("Left Position: ", armLeft.getCurrentPosition());
@@ -129,7 +129,7 @@ public class DriveClass extends LinearOpMode
             telemetry.addData("Wrist Motor Position: ", wristMotor.getCurrentPosition());
             telemetry.addData("Plane Motor Position: ", planeMotor.getCurrentPosition());
             telemetry.update();
-
+            */
             JoyStickConversion();
             AngleConversion();
 
@@ -140,19 +140,19 @@ public class DriveClass extends LinearOpMode
 
             //------Arm-----
 
-            Arm();
+            //Arm();
 
             //------Fingers-----
 
-            Fingers();
+            //Fingers();
 
             //---------Wrist-------
 
-            Wrist();
+           // Wrist();
 
             //------Plane-------
 
-            Plane();
+            //Plane();
 
 
 
@@ -189,7 +189,7 @@ public class DriveClass extends LinearOpMode
         rJoyStickY = gamepad1.right_stick_y * -1;
         rJoyStickX = gamepad1.right_stick_x;
     }
-
+    /*
     private void Arm()
     {
         if (gamepad2.left_bumper)
@@ -268,7 +268,7 @@ public class DriveClass extends LinearOpMode
             planeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
-
+    */
 }
 
 
