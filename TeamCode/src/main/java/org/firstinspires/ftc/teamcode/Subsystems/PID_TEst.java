@@ -30,6 +30,7 @@ public class PID_TEst extends OpMode {
     public static double kP = 0;
     public static double kD = 0;
     public PIDController pid;
+    public static double maxPower = .1;
 
 
     //this section allows us to access telemetry data from a browser
@@ -86,24 +87,12 @@ public class PID_TEst extends OpMode {
     public void loop() {
 
         current_position = this.motor0.getCurrentPosition();
-        // hey
-
-        //this.pid.setSetPoint(target_position);
-
-
-        //this.pid.setP(kP);
-        //this.pid.setI(kI);
-        //this.pid.setD(kD);
         pid.setPID(kP,kI,kD);
         double output = 0;
         if (Math.abs(target_position - current_position) > 10){
             output = this.pid.calculate(current_position, target_position);
-            //if (output > 1){
-            //    output=1;
-            //} else if (output< -1) {
-            //    output= -1;
-            //}
-            //this.motor0.setPower(output);
+            output = limiter(output, maxPower);
+            this.motor0.setPower(output);
         }
 
 
@@ -129,5 +118,20 @@ public class PID_TEst extends OpMode {
 //        dashboardTelemetry.addData("target position", target_position);
 //        dashboardTelemetry.addData("motor0 power", motor0.getPower());
         dashboardTelemetry.update();
+    }
+
+     /**
+     * this will limit the input to a range of -limiter to limiter
+     * @param input the value to be limited
+     * @param limiter the max value the input can be
+     * @return the limited input
+     */
+    private double limiter(double input, double limiter){
+        if (input > limiter) {
+            input = limiter;
+        } else if (input < -limiter) {
+            input = -limiter;
+        }
+        return input;
     }
 }
