@@ -26,7 +26,7 @@ public class PID_TEst extends OpMode {
     public static double power =0.5;
 
     public static double current_position;
-    public static double target_position = 100;
+    public static double target_position = 500;
     public static double output;
     public static double kI = 0;
     public static double kP = 0;
@@ -96,7 +96,7 @@ public class PID_TEst extends OpMode {
         this.pid.setD(kD);
 
         if (target_position == current_position){
-            output = this.pid.calculate(this.motor0.getCurrentPosition(), target_position);
+            output = this.pid.calculate(current_position, target_position);
             if (output > 1){
                 output=1;
             } else if (output< -1) {
