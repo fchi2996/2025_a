@@ -96,7 +96,7 @@ public class PID_TEst extends OpMode {
         //this.pid.setD(kD);
         pid.setPID(kP,kI,kD);
         double output = 0;
-        if (target_position == current_position){
+        if (Math.abs(target_position - current_position) > 10){
             output = this.pid.calculate(current_position, target_position);
             //if (output > 1){
             //    output=1;
