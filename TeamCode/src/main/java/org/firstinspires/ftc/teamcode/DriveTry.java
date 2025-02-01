@@ -44,8 +44,8 @@ public class DriveTry extends OpMode {
         arm.mooveShoulder(gamepad2.right_bumper, gamepad2.left_bumper);
         arm.mooveArm(gamepad2.a, gamepad2.b);
 
-        dashboardTelemetry.addData("tight trigger", gamepad1.right_trigger);
-        dashboardTelemetry.addData("left trigger", gamepad1.left_trigger);
+        dashboardTelemetry.addData("tight trigger", gamepad2.right_trigger);
+        dashboardTelemetry.addData("left trigger", gamepad2.left_trigger);
         dashboardTelemetry.update();
 
     }

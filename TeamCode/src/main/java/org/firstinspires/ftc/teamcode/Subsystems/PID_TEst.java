@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -13,20 +15,29 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 //this line identifies if this is an autonomous or teleop program
-@Autonomous(name = "Subsystem_Test")
+@Autonomous(name = "PID TEst")
 //this line allows you to modify variables inside the dashboard
 @Config
-public class Subsystem_Test extends OpMode {
+public class PID_TEst extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotorEx motor0;
     private Servo servo0;
-    public static double power =0.0;
-    public static int position = 0;
+    public static double power =0.5;
+
+    public static double current_position;
+    public static double target_position = 100;
+    public static double output;
+    public static double kI = 0;
+    public static double kP = 0;
+    public static double kD = 0;
+    public PIDController pid;
+
 
     //this section allows us to access telemetry data from a browser
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -37,13 +48,20 @@ public class Subsystem_Test extends OpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         this.motor0 = hardwareMap.get(DcMotorEx.class,"shoulderMotor");
-        this.motor0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.motor0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.motor0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.motor0.setDirection(DcMotorSimple.Direction.REVERSE);
         this.motor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         this.servo0 = hardwareMap.get(Servo.class, "fingerServo");
 
+        pid = new PIDController(kP, kI, kD);
+
         // Tell the driver that initialization is complete.
+        dashboardTelemetry.addData("power", motor0.getPower());
+        dashboardTelemetry.addData("current position", motor0.getCurrentPosition());
+        dashboardTelemetry.addData("target position", target_position);
+        dashboardTelemetry.addData("boolean at target position", pid.atSetPoint());
         dashboardTelemetry.addData("Status", "Initialized");
         dashboardTelemetry.update();
     }
@@ -68,18 +86,34 @@ public class Subsystem_Test extends OpMode {
      */
     @Override
     public void loop() {
-        this.motor0.setPower(Subsystem_Test.power);
-//        this.motor0.getCurrentPosition();
-//
-//        this.motor0.setTargetPosition(position);
-//        this.motor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        this.motor0.setPower(power);
 
-        dashboardTelemetry.addData("motor0 power", motor0.getPower());
-        dashboardTelemetry.addData("motor0 Position", motor0.getCurrentPosition());
-        dashboardTelemetry.addData("Status", "Run Time: " + runtime.toString());
+        current_position = this.motor0.getCurrentPosition();
+        //this.pid.setSetPoint(target_position);
 
-        dashboardTelemetry.addData("servo position", servo0.getPosition());
+
+        this.pid.setP(kP);
+        this.pid.setI(kI);
+        this.pid.setD(kD);
+
+        if (target_position == current_position){
+            output = this.pid.calculate(this.motor0.getCurrentPosition(), target_position);
+            if (output > 1){
+                output=1;
+            } else if (output< -1) {
+                output= -1;
+            }
+            this.motor0.setPower(output);
+        }
+
+
+
+
+        dashboardTelemetry.addData("power", output);
+        dashboardTelemetry.addData("current position", motor0.getCurrentPosition());
+        dashboardTelemetry.addData("target position", target_position);
+        dashboardTelemetry.addData("boolean at target position", pid.atSetPoint());
+
+
         dashboardTelemetry.update();
     }
 
@@ -89,7 +123,10 @@ public class Subsystem_Test extends OpMode {
     @Override
     public void stop() {
         this.motor0.setPower(0);
-        dashboardTelemetry.addData("motor0 power", motor0.getPower());
+//        dashboardTelemetry.addData("power", motor0.getPower());
+//        dashboardTelemetry.addData("current position", motor0.getCurrentPosition());
+//        dashboardTelemetry.addData("target position", target_position);
+//        dashboardTelemetry.addData("motor0 power", motor0.getPower());
         dashboardTelemetry.update();
     }
 }

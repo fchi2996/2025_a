@@ -30,6 +30,11 @@ public class Lift {
     public void Ascend(double up, double down){
         double direction = 0.0;
         direction = up - down;
-        liftMotor.setPower(direction);
+        if (direction != 0.0) {
+            liftMotor.setPower(direction);
+        }
+        else{
+            liftMotor.setPower(0.0);
+        }
     }
 }
