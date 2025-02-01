@@ -23,7 +23,6 @@ public class PID_TEst extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotorEx motor0;
     private Servo servo0;
-    public static double power =0.5;
 
     public static double current_position;
     public static double target_position = 500;
