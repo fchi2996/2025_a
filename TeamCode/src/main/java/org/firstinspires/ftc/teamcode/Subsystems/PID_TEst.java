@@ -126,7 +126,7 @@ public class PID_TEst extends OpMode {
      * @param limiter the max value the input can be
      * @return the limited input
      */
-    private double limiter(double input, double limiter){
+    public static double limiter(double input, double limiter){
         if (input > limiter) {
             input = limiter;
         } else if (input < -limiter) {
